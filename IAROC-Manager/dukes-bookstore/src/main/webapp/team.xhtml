@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!--
+
+    Copyright (c) 2014 Oracle and/or its affiliates. All rights reserved.
+
+    You may not modify, use, reproduce, or distribute this software except in
+    compliance with  the terms of the License at:
+    http://java.net/projects/javaeetutorial/pages/BerkeleyLicense
+
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/management-template.xhtml">
+        <ui:define name="title">Team Manager</ui:define>
+        <ui:define name="body">
+        </ui:define>
+
+        <ui:define name="propertiesTable">
+
+            <h:dataTable
+                var="team"
+                summary="Table of teams"
+                value="#{teamManager.teams}"
+                rules="all"
+                cellpadding="5">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Team ID" />
+                    </f:facet>
+                    <h:form>
+                        <h:commandLink id="team_id_link" action="teamDetails">
+                            <h:outputText value="#{team.id}" />
+                            <f:setPropertyActionListener target="#{teamManager.currentTeam}" value="#{team}" />
+                        </h:commandLink>
+                    </h:form>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Name" />
+                    </f:facet>
+                    <h:outputText value="#{team.name}" />
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="iconURL" />
+                    </f:facet>
+                    <h:outputText value="#{team.iconURL}" />
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Actions" />
+                    </f:facet>
+                    <h:form>
+                        <h:commandLink value="Delete" actionListener="#{teamManager.removeTeam}" action="team">
+                            <f:param name="deleteId" id="deleteId" value="#{team.id}" />
+                        </h:commandLink>
+                        &nbsp;
+                        <h:commandLink value="Edit" actionListener="#{teamManager.editTeam}" action="team">
+                            <f:param name="editId" id="editId" value="#{team.id}" />
+                        </h:commandLink>
+                    </h:form>
+                </h:column>
+            </h:dataTable>
+        </ui:define>
+
+        <ui:define name="editOrCreateForm">
+            <h:form>
+                <h:outputLabel for="nameInputText" rendered="true" value="Name: " />
+                <h:inputText id="nameInputText" required="true" value="#{teamManager.currentTeam.name}" /><br />
+
+                <h:outputLabel for="iconURLInputText" rendered="true" value="Icon URL: " />
+                <h:inputText id="iconURLInputText" required="true" value="#{teamManager.currentTeam.iconURL}" /><br />
+                <h:commandButton value="Modify" action="#{teamManager.submitCurrentTeam}" rendered="#{teamManager.currentTeam.id != null}" />
+                <h:commandButton value="Create" action="#{teamManager.submitCurrentTeam}" rendered="#{teamManager.currentTeam.id == null}" />
+                <h:commandButton value="Reset" action="#{teamManager.resetTeam()}" />
+            </h:form>
+
+        </ui:define>
+    </ui:composition>
+</html>
