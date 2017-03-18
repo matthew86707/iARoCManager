@@ -26,21 +26,22 @@ import org.jointheleague.iaroc.entities.TeamMember;
 @Singleton
 @Startup
 public class ConfigBean {
-
+   
     @EJB
     private RequestBean request;
 
     @PostConstruct
     public void createData() {
-        Team pirateTeam = new Team("The Pirates", "cannon.jpg");
+        
+        Team pirateTeam = new Team("The Pirates", "cannon.jpg", "ARGG");
         request.addOrUpdateTeam(pirateTeam);
-        Team ninjaTeam = new Team("The Ninjas", "shuriken.gif");
+        Team ninjaTeam = new Team("The Ninjas", "shuriken.gif", "...");
         request.addOrUpdateTeam(ninjaTeam);
-        Team robotTeam = new Team("The Robots", "1011101.gif");
+        Team robotTeam = new Team("The Robots", "1011101.gif", "BEEP BOOP");
         request.addOrUpdateTeam(robotTeam);
-        Team zombieTeam = new Team("The Zombies", "brains.gif");
+        Team zombieTeam = new Team("The Zombies", "brains.gif", "BRAINNNSS!!");
         request.addOrUpdateTeam(zombieTeam);
-        Team doggoTeam = new Team("The Doggos", "adorableDogPic.jpg");
+        Team doggoTeam = new Team("The Doggos", "adorableDogPic.jpg", "so woof much wow");
         request.addOrUpdateTeam(doggoTeam);
         
         request.addOrUpdateTeamMember(new TeamMember(1, pirateTeam, "Capn", "Jack", "capnJack@gmail.com"));

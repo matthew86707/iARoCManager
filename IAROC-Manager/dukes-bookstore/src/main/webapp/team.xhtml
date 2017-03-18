@@ -53,6 +53,12 @@
                     <h:outputText value="#{team.iconURL}" />
                 </h:column>
                 <h:column>
+                     <f:facet name="header">
+                        <h:outputText value="Slogan" />
+                    </f:facet>
+                    <h:outputText value="#{team.slogan}" />
+                </h:column>
+                <h:column>
                     <f:facet name="header">
                         <h:outputText value="Actions" />
                     </f:facet>
@@ -73,7 +79,10 @@
             <h:form>
                 <h:outputLabel for="nameInputText" rendered="true" value="Name: " />
                 <h:inputText id="nameInputText" required="true" value="#{teamManager.currentTeam.name}" /><br />
-
+                
+                 <h:outputLabel for="sloganInputText" rendered="true" value="Slogan: " />
+                <h:inputText id="sloganInputText" required="true" value="#{teamManager.currentTeam.slogan}" /><br />
+                
                 <h:outputLabel for="iconURLInputText" rendered="true" value="Icon URL: " />
                 <h:inputText id="iconURLInputText" required="true" value="#{teamManager.currentTeam.iconURL}" /><br />
                 <h:commandButton value="Modify" action="#{teamManager.submitCurrentTeam}" rendered="#{teamManager.currentTeam.id != null}" />

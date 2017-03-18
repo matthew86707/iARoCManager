@@ -23,6 +23,11 @@ public class RequestBean {
     private EntityManager em;
 
     private static final Logger logger = Logger.getLogger("order.ejb.RequestBean");
+    
+    
+    public void clearAll(){
+        em.clear();
+    }
 
     public void addOrUpdateTeam(Team team) {
         Team foundTeam = findTeam(team.getId());
@@ -38,6 +43,7 @@ public class RequestBean {
         Integer newTeamMemberId = teamMember.getNewTeamMemberId();
         if(teamMember.getTeam() == null || newTeamMemberId != teamMember.getTeam().getId()) {
             Team newTeam = findTeam(newTeamMemberId);
+            
             if(newTeam != null) {
                 teamMember.setTeam(newTeam);
             }
@@ -112,9 +118,7 @@ public class RequestBean {
     }
     
     public List<TeamMember> getTeamMembers(int teamId) {
-        List<TeamMember> teamMembers = (List<TeamMember>)
-                em.createNamedQuery("findMembersOfTeam").setParameter("teamId", teamId).
-                        getResultList();
+        List<TeamMember> teamMembers = findTeam(teamId).getMembers();
         return teamMembers;
     }
 

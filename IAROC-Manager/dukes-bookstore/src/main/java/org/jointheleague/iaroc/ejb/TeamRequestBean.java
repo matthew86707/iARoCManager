@@ -33,9 +33,9 @@ public class TeamRequestBean {
     public TeamRequestBean() throws Exception {
     }
 
-    public void createTeam(String name, String imageUrl) {
+    public void createTeam(String name, String imageUrl, String slogan) {
         try {
-            Team team = new Team(name, imageUrl);
+            Team team = new Team(name, imageUrl, slogan);
             logger.log(Level.INFO, "Created team {0}", team.getId());
             em.persist(team);
             logger.log(Level.INFO, "Persisted team {0}", team.getId());
