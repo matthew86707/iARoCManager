@@ -30,13 +30,14 @@ import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.jointheleague.iaroc.ejb.RequestBean;
 
 @Entity
 @Table(name="PERSISTENCE_TEAM")
 @NamedQueries({
 @NamedQuery(
     name="findAllTeams",
-    query="SELECT t FROM Team t "
+    query="SELECT t FROM Team t WHERE t.name <> 'Unspecified'"
 ),
 @NamedQuery(
     name="findTeamByName",

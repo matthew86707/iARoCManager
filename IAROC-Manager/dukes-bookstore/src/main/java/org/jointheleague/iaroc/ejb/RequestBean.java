@@ -38,6 +38,9 @@ public class RequestBean {
     
     private static RequestBean testBean = null;
     
+    public static final String UNSPECIFICIED_TEAM_NAME = "Unspecified";
+
+    
     /**
      * If this isn't being provided by the framework, provide a method of injecting it ourselves.
      * @return 
@@ -92,9 +95,7 @@ public class RequestBean {
         if(unspecifiedTeam != null) {
             return unspecifiedTeam;
         }
-        
-        final String UNSPECIFICIED_TEAM_NAME = "Unspecified";
-        
+                
         unspecifiedTeam = getTeamByName(UNSPECIFICIED_TEAM_NAME);
         
         if(unspecifiedTeam != null) {
@@ -164,8 +165,8 @@ public class RequestBean {
                     em.merge(currentMemberPersisted);
                 }  
             }
+            em.remove(team);
         }
-        em.remove(team);
     }
     
     public Team getTeamByName(String name) {

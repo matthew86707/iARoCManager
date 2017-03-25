@@ -50,15 +50,15 @@ public class TeamMember implements java.io.Serializable {
     private Team team;
     
     @NotNull
-    @Size(min=2, max=25)
+    @Size(max=25)
     private String firstName;
     
     @NotNull
-    @Size(min=2, max=25)
+    @Size(max=25)
     private String lastName;
     
     @NotNull
-    @Size(min=2, max=50)
+    @Size(max=50)
     //Probably want to add more contact info. But, we will prob have a separate store for this info.
     //Besides, who cares other forms of communications when you have email?
     private String email;
@@ -67,9 +67,9 @@ public class TeamMember implements java.io.Serializable {
     private Integer newTeamMemberId;
     
     public TeamMember() {
-        firstName = "   ";
-        lastName  = "   ";
-        email = "   ";
+        firstName = "";
+        lastName  = "";
+        email = "";
     }
     
     public TeamMember(Team team, String firstName, String lastName, String email) {

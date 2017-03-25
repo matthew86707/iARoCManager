@@ -58,6 +58,8 @@ public class TeamTest {
 
             team = new Team("team", "team.jpg");
             assertNotNull(team);
+            assertEquals("team", team.getName());
+            assertEquals("team.jpg", team.getIconURL());
 
             //Now try creating a team that fails name validation via being too long.
             try {
@@ -135,7 +137,7 @@ public class TeamTest {
         List<Team> teams = (List<Team>) request.getEntityManager().
                 createNamedQuery("findAllTeams").getResultList();
 
-        assertEquals(1, teams.size());
+        assertEquals(0, teams.size());
 
         request.addOrUpdateTeam(ninjaTeam);
         request.addOrUpdateTeamMember(whiteShadow);
@@ -156,5 +158,50 @@ public class TeamTest {
         //So, only the ninja team member remains.
         assertEquals(2, numUnspecifiedTeamMembers);
         request.getEntityManager().flush();
+    }
+    
+    @Test
+    public void testCreateTeamMember() {
+
+        assertEquals(0,request.getAllTeamMembers().size());
+        assertEquals(0,request.getAllTeams().size());
+        
+        TeamMember member = new TeamMember();
+        assertEquals("", member.getFirstName());
+        assertEquals("", member.getLastName());
+        assertEquals("", member.getEmail());
+        
+        member = new TeamMember(doggoTeam, "Cool", "Dog", "dogsdonthaveemails.gmail.com");
+        assertNotNull(member);
+        assertEquals(doggoTeam, member.getTeam());
+        assertEquals("Cool", member.getFirstName());
+        assertEquals("Dog", member.getLastName());
+        assertEquals("dogsdonthaveemails.gmail.com", member.getEmail());
+        
+        assertTrue(doggoTeam.getTeamMembers().contains(member));
+        
+        boolean exceptionThrown = false;
+        try {
+            member = new TeamMember(pirateTeam, String.format("%1$-26"), "Johnson", "supsupsup.sup.sup");
+        } catch (Exception e) {
+            exceptionThrown = true;
+        }
+        assertTrue(exceptionThrown);
+        exceptionThrown = false;
+        try {
+            member = new TeamMember(pirateTeam, "Henry", String.format("%1$-26"), "supsupsup.sup.sup");
+        } catch (Exception e) {
+            exceptionThrown = true;
+        }
+        assertTrue(exceptionThrown);
+        exceptionThrown = false;
+        try {
+            member = new TeamMember(pirateTeam, "Henry", "Johnson", String.format("%1$-51"));
+        } catch (Exception e) {
+            exceptionThrown = true;
+        }
+        assertTrue(exceptionThrown);
+        
+        request.getEntityManager().flush();        
     }
 }
