@@ -7,7 +7,9 @@
  */
 package org.jointheleague.iaroc.entities;
 
-import org.jointheleague.iaroc.entities.Team;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import javax.ejb.EJB;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -18,6 +20,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.persistence.Transient;
@@ -38,11 +41,12 @@ import javax.validation.constraints.Size;
 public class TeamMember implements java.io.Serializable {
     private static final long serialVersionUID = 6582105865012174694L;
     @Id
-    @GeneratedValue(strategy=GenerationType.TABLE, generator="teamMemberGen")
+    @SequenceGenerator(name = "TeamMemberSeq", sequenceName = "TeamMemberSeq", allocationSize=1)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TeamMemberSeq")
     private Integer id;
     
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="TEAM_ID")
+    @ManyToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name = "teamId")
     private Team team;
     
     @NotNull
@@ -68,9 +72,8 @@ public class TeamMember implements java.io.Serializable {
         email = "   ";
     }
     
-    public TeamMember(Integer id, Team team, String firstName, String lastName, String email) {
-        this.id = id;
-        this.team = team;
+    public TeamMember(Team team, String firstName, String lastName, String email) {
+        this.setTeam(team);
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -88,8 +91,14 @@ public class TeamMember implements java.io.Serializable {
         return team;
     }
 
-    public void setTeam(Team team) {
+    public final void setTeam(Team team) {
+        if(this.team != null && !this.team.equals(team)) {
+            this.team.removeTeamMember(this);
+        }
         this.team = team;
+        if(this.team != null) {
+            this.team.addTeamMember(this);
+        }
     }
 
     public String getFirstName() {
@@ -125,26 +134,6 @@ public class TeamMember implements java.io.Serializable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    @Override
-    public int hashCode() {
-        return this.id;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final TeamMember other = (TeamMember) obj;
-        return other.id == this.id;
     }
 
     @Override

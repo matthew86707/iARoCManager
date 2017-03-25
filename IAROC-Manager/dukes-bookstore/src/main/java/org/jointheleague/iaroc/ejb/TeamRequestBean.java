@@ -11,8 +11,6 @@ import org.jointheleague.iaroc.entities.Team;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javaeetutorial.dukesbookstore.exception.BookNotFoundException;
-import javaeetutorial.dukesbookstore.exception.BooksNotFoundException;
 import javax.ejb.EJBException;
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;

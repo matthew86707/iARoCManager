@@ -38,14 +38,21 @@ public class TeamManager implements Serializable{
     private RequestBean request;
     private static final Logger logger = Logger.getLogger("TeamManager");
     
-    private Team currentTeam;
-    
-    private TeamMember currentTeamMember;
-    
-    public TeamManager(){
-        currentTeam = new Team();
-        currentTeamMember = new TeamMember();
+    public TeamManager() {
+        
     }
+    
+    /**
+     * Constructor for manually injecting request bean. Mostly for testing.
+     * @param request 
+     */
+    public TeamManager(RequestBean request) {
+        this.request = request;
+    }
+    
+    private Team currentTeam = new Team();
+    
+    private TeamMember currentTeamMember = new TeamMember();
 
     public List<Team> getTeams() {
         return request.getAllTeams();
@@ -139,7 +146,7 @@ public class TeamManager implements Serializable{
     }
     
     public List<TeamMember> getCurrentTeamMembers() {
-        return request.getTeamMembers(currentTeam.getId());
+        return currentTeam.getTeamMembers();
     }
     
     public List<Integer> getTeamIds() {

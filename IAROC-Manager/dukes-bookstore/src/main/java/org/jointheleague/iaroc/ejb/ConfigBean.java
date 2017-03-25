@@ -26,40 +26,36 @@ import org.jointheleague.iaroc.entities.TeamMember;
 @Singleton
 @Startup
 public class ConfigBean {
-   
+
     @EJB
     private RequestBean request;
 
     @PostConstruct
     public void createData() {
         
-        Team pirateTeam = new Team("The Pirates", "cannon.jpg", "ARGG");
+        request.clearDatabase();
+        
+        Team pirateTeam = new Team("The Pirates", "cannon.jpg");
         request.addOrUpdateTeam(pirateTeam);
-        Team ninjaTeam = new Team("The Ninjas", "shuriken.gif", "...");
+        Team ninjaTeam = new Team("The Ninjas", "shuriken.gif");
         request.addOrUpdateTeam(ninjaTeam);
-        Team robotTeam = new Team("The Robots", "1011101.gif", "BEEP BOOP");
+        Team robotTeam = new Team("The Robots", "1011101.gif");
         request.addOrUpdateTeam(robotTeam);
-        Team zombieTeam = new Team("The Zombies", "brains.gif", "BRAINNNSS!!");
+        Team zombieTeam = new Team("The Zombies", "brains.gif");
         request.addOrUpdateTeam(zombieTeam);
-        Team doggoTeam = new Team("The Doggos", "adorableDogPic.jpg", "so woof much wow");
+        Team doggoTeam = new Team("The Doggos", "adorableDogPic.jpg");
         request.addOrUpdateTeam(doggoTeam);
         
-        request.addOrUpdateTeamMember(new TeamMember(1, pirateTeam, "Capn", "Jack", "capnJack@gmail.com"));
-        request.addOrUpdateTeamMember(new TeamMember(2, pirateTeam, "Capn", "Crunch", "capnCrunch@yahoo.com"));
-        request.addOrUpdateTeamMember(new TeamMember(3, ninjaTeam, "White", "Shadow", "obviouslyfakeemail@lol.org"));
-        request.addOrUpdateTeamMember(new TeamMember(4, robotTeam, "1011", "111001", "111011001@aol.com"));
-        request.addOrUpdateTeamMember(new TeamMember(5, zombieTeam, "Brains", "McBrains", "mmmBrains@theHorde.gov"));
-        request.addOrUpdateTeamMember(new TeamMember(6, doggoTeam, "Twilight", "Sparkle", "pupper@omgdogs.com"));
+        request.addOrUpdateTeamMember(new TeamMember(pirateTeam, "Capn", "Jack", "capnJack@gmail.com"));
+        request.addOrUpdateTeamMember(new TeamMember(pirateTeam, "Capn", "Crunch", "capnCrunch@yahoo.com"));
+        request.addOrUpdateTeamMember(new TeamMember(ninjaTeam, "White", "Shadow", "obviouslyfakeemail@lol.org"));
+        request.addOrUpdateTeamMember(new TeamMember(robotTeam, "1011", "111001", "111011001@aol.com"));
+        request.addOrUpdateTeamMember(new TeamMember(zombieTeam, "Brains", "McBrains", "mmmBrains@theHorde.gov"));
+        request.addOrUpdateTeamMember(new TeamMember(doggoTeam, "Twilight", "Sparkle", "pupper@omgdogs.com"));
     }
 
     @PreDestroy
     public void deleteData() {
-        request.getAllTeams().forEach((team) -> {
-            request.removeTeam(team.getId());
-        });
-        
-        request.getAllTeamMembers().forEach((teamMember) -> {
-            request.removeTeamMember(teamMember.getId());
-        });
+        request.clearDatabase();
     }
 }
