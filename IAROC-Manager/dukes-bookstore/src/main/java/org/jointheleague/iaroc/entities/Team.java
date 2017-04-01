@@ -56,7 +56,7 @@ public class Team implements java.io.Serializable {
     @NotNull
     @Size(max=25)
     private String name;
-    
+    private String slogan;
     private String iconURL;
     
     @OneToMany(cascade = CascadeType.ALL, 
@@ -66,16 +66,25 @@ public class Team implements java.io.Serializable {
     public Team() {
         name = "";
         iconURL = "";
+        slogan = "";
     }
  
     public Team(String name, String iconURL) {
         this.name = name;
         this.iconURL = iconURL;
+        this.slogan = "";
     }
     
     public Team(Integer id, String name, String iconURL) {
         this.id = id;
         this.name = name;
+        this.iconURL = iconURL;
+        this.slogan = "";
+    }
+    
+    public Team(String name, String slogan, String iconURL){
+        this.name = name;
+        this.slogan = slogan;
         this.iconURL = iconURL;
     }
 

@@ -15,6 +15,8 @@ import javax.ejb.EJBException;
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.jointheleague.iaroc.exceptions.TeamsNotFoundException;
+import org.jointheleague.iaroc.exceptions.TeamNotFoundException;
 
 /**
  * <p>
@@ -42,20 +44,20 @@ public class TeamRequestBean {
         }
     }
 
-    public List<Team> getTeams() throws BooksNotFoundException {
+    public List<Team> getTeams() throws TeamsNotFoundException {
         try {
             return (List<Team>) em.createNamedQuery("findTeams").getResultList();
         } catch (Exception ex) {
-            throw new BooksNotFoundException(
+            throw new TeamsNotFoundException(
                     "Could not get teams: " + ex.getMessage());
         }
     }
 
-    public Team getTeam(String teamId) throws BookNotFoundException {
+    public Team getTeam(String teamId) throws TeamNotFoundException {
         Team requestedTeam = em.find(Team.class, teamId);
 
         if (requestedTeam == null) {
-            throw new BookNotFoundException("Couldn't find book: " + teamId);
+            throw new TeamNotFoundException("Couldn't find book: " + teamId);
         }
 
         return requestedTeam;

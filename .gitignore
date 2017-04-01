@@ -1,0 +1,9 @@
+*.class
+*.jar
+*.log
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+*.netbeans_automatic_build
