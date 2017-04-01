@@ -20,6 +20,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -57,11 +59,16 @@ public class Team implements java.io.Serializable {
     @Size(max=25)
     private String name;
     private String slogan;
+
     private String iconURL;
     
     @OneToMany(cascade = CascadeType.ALL, 
         mappedBy = "team", orphanRemoval = true, fetch = FetchType.EAGER)
     private List<TeamMember> teamMembers = new ArrayList<>();
+    
+    @ManyToMany(fetch=FetchType.EAGER)
+    @JoinTable(name = "MATCH_TEAMS")
+    private List<Match> matches = new ArrayList<Match>();
     
     public Team() {
         name = "";
@@ -88,6 +95,15 @@ public class Team implements java.io.Serializable {
         this.iconURL = iconURL;
     }
 
+    public List<Match> getMatches() {
+        return matches;
+    }
+
+    public void setMatches(List<Match> matches) {
+        this.matches = matches;
+    }
+    
+    
     public Integer getId() {
         return id;
     }
@@ -111,6 +127,14 @@ public class Team implements java.io.Serializable {
     public void setIconURL(String iconURL) {
         this.iconURL = iconURL;
     }
+    
+    public String getSlogan() {
+        return slogan;
+    }
+
+    public void setSlogan(String slogan) {
+        this.slogan = slogan;
+    }
 
     @Override
     public String toString() {
@@ -123,6 +147,16 @@ public class Team implements java.io.Serializable {
 
     public List<TeamMember> getTeamMembers() {
         return teamMembers;
+    }
+    
+    public void addMatch(Match toAdd){
+        matches.add(toAdd);
+        toAdd.addTeam(this);
+    }
+    
+    public void removeMatch(Match toRemove){
+        matches.remove(toRemove);
+        toRemove.removeTeam(this);
     }
 
     public void addTeamMember(TeamMember teamMember) {
